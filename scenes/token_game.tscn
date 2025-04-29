@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://diuu2t32vr71e"]
+
+[ext_resource type="Script" uid="uid://cki207k2rowkx" path="res://scripts/token_game.gd" id="1_xy0ej"]
+[ext_resource type="Texture2D" uid="uid://bo8swg5mf7co2" path="res://assets/FazToken-front.png" id="2_oth5x"]
+[ext_resource type="Script" uid="uid://du8jjj2y82sp4" path="res://scripts/stats.gd" id="3_c2xcv"]
+
+[node name="TokenGame" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xy0ej")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ClickButton" type="TextureButton" parent="CenterContainer"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+texture_normal = ExtResource("2_oth5x")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Stats" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+script = ExtResource("3_c2xcv")
+
+[node name="TokensLabel" type="Label" parent="Stats"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "0 FazTokens"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="tokens_changed" from="." to="Stats" method="_on_token_game_tokens_changed"]
+[connection signal="tokens_changed" from="." to="Stats" method="_on_cookie_game_tokens_changed"]
+[connection signal="button_down" from="CenterContainer/ClickButton" to="." method="_on_click_button_button_down"]
