@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnhajok47yisu"]
+
+[ext_resource type="Script" uid="uid://cthmk8yhewqpq" path="res://scripts/permanent_button.gd" id="1_lypej"]
+
+[node name="PermanentButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+autowrap_mode = 2
+script = ExtResource("1_lypej")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
