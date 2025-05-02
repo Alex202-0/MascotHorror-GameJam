@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bd1ddusnsvnwa"]
+
+[ext_resource type="Texture2D" uid="uid://g88b6x480v3g" path="res://assets/foxy.png" id="1_n7jil"]
+[ext_resource type="Script" uid="uid://88o3agb3nxr1" path="res://scripts/animatronic/foxy.gd" id="1_stt3v"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_stt3v"]
+radius = 108.0
+height = 296.0
+
+[node name="Foxy" type="Area2D"]
+visible = false
+script = ExtResource("1_stt3v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_stt3v")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_n7jil")
