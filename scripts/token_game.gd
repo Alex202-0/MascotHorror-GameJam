@@ -2,6 +2,7 @@ extends Control
 
 const save_path = "user://userdata.save"
 
+@onready var camera_system: CameraSystem = $CameraSystem
 var tokens = 0
 var amount_per_click = 1
 var tokens_per_second := 0.0
@@ -91,3 +92,7 @@ func _on_clicker_button_pressed() -> void:
 func _on_upgrade_button_pressed() -> void:
 	$UpgradeContainer.visible = true
 	$ClickerContainer.visible = false
+
+
+func _on_camera_button_pressed() -> void:
+	camera_system.toggle()

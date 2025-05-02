@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://diuu2t32vr71e"]
+[gd_scene load_steps=10 format=3 uid="uid://diuu2t32vr71e"]
 
 [ext_resource type="Script" uid="uid://cki207k2rowkx" path="res://scripts/token_game.gd" id="1_xy0ej"]
 [ext_resource type="Texture2D" uid="uid://bo8swg5mf7co2" path="res://assets/FazToken-front.png" id="2_oth5x"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://d2douju0ic1s8" path="res://scripts/generator_panel.gd" id="4_c2xcv"]
 [ext_resource type="FontFile" uid="uid://ct2bf8irj7o1w" path="res://assets/Fonts/vcr_osd_mono/VCR_OSD_MONO_1.001.ttf" id="4_oth5x"]
 [ext_resource type="Script" uid="uid://djxf0053ayyk1" path="res://scripts/permUpgrade_panel.gd" id="5_v7djh"]
+[ext_resource type="PackedScene" uid="uid://dvi7q0rasu8s7" path="res://scenes/CameraSystem.tscn" id="7_dfwkr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2xcv"]
 bg_color = Color(0.229495, 0.202935, 0.61182, 1)
@@ -181,6 +182,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_oth5x")
 text = "UPGRADES"
 
 [node name="CameraButton" type="Button" parent="HorizontalBar/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -198,9 +200,35 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_c2xcv")
 theme_override_styles/normal = SubResource("StyleBoxFlat_oth5x")
 text = "SETTINGS"
 
+[node name="CameraToggle" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 566.0
+offset_bottom = 646.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 20
+
+[node name="CameraButton" type="Button" parent="CameraToggle"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_oth5x")
+theme_override_styles/focus = SubResource("StyleBoxFlat_c2xcv")
+theme_override_styles/normal = SubResource("StyleBoxFlat_oth5x")
+text = "INTER DIMENSIONAL CAMERA SYSTEM"
+
+[node name="CameraSystem" parent="." instance=ExtResource("7_dfwkr")]
+visible = false
+layout_mode = 1
+
 [connection signal="tokens_changed" from="." to="ClickerContainer/Stats" method="_on_token_game_tokens_changed"]
 [connection signal="tokens_changed" from="." to="ClickerContainer/Stats" method="_on_cookie_game_tokens_changed"]
 [connection signal="tps_changed" from="." to="ClickerContainer/Stats" method="_on_token_game_tps_changed"]
 [connection signal="button_down" from="ClickerContainer/CenterContainer/ClickButton" to="." method="_on_click_button_button_down"]
 [connection signal="pressed" from="HorizontalBar/HBoxContainer/ClickerButton" to="." method="_on_clicker_button_pressed"]
 [connection signal="pressed" from="HorizontalBar/HBoxContainer/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
+[connection signal="pressed" from="CameraToggle/CameraButton" to="." method="_on_camera_button_pressed"]

@@ -14,3 +14,11 @@ config/name="FNAF Clicker"
 run/main_scene="uid://diuu2t32vr71e"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/stretch/mode="canvas_items"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=2
