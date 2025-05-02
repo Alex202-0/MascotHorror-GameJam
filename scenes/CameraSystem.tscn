@@ -1,0 +1,315 @@
+[gd_scene load_steps=17 format=3 uid="uid://dvi7q0rasu8s7"]
+
+[ext_resource type="Script" uid="uid://ollcg4mqpo7d" path="res://scripts/camera_system.gd" id="1_gxu2p"]
+[ext_resource type="Texture2D" uid="uid://0h6j5fp0l0u2" path="res://assets/Camera Backgrounds/sans.jpg" id="2_rb1pm"]
+[ext_resource type="Texture2D" uid="uid://bngxnv1s2yixw" path="res://assets/Camera Backgrounds/fnaf1.jpg" id="2_u1x7x"]
+[ext_resource type="Texture2D" uid="uid://b0o1kixc5gog3" path="res://assets/Camera Backgrounds/centro.jpg" id="3_3gt48"]
+[ext_resource type="FontFile" uid="uid://b8pgtq248qfvd" path="res://assets/Fonts/TeenyTinyPixls-o2zo.ttf" id="3_rb1pm"]
+[ext_resource type="Texture2D" uid="uid://dwevdfld5f82j" path="res://assets/Camera Backgrounds/fd.jpg" id="4_3t73v"]
+[ext_resource type="Material" uid="uid://bh78fty03rshi" path="res://shaders/static.tres" id="4_ba6a4"]
+[ext_resource type="Texture2D" uid="uid://dq7w47xh17uhq" path="res://assets/Camera Backgrounds/backrooms.jpg" id="5_yhwok"]
+[ext_resource type="Texture2D" uid="uid://culsxn2u2fc61" path="res://assets/Camera Backgrounds/malenia.jpg" id="6_p4fxp"]
+[ext_resource type="Texture2D" uid="uid://dyba8y88h1ps" path="res://assets/Camera Backgrounds/the_end.jpg" id="7_usyeu"]
+[ext_resource type="Texture2D" uid="uid://byguux5u0u2sm" path="res://assets/Camera Backgrounds/pokemon.jpg" id="9_u1g1r"]
+[ext_resource type="AudioStream" uid="uid://ddyacnuknns13" path="res://assets/Audio/sfx/cameraChange.mp3" id="12_3gt48"]
+[ext_resource type="FontFile" uid="uid://ct2bf8irj7o1w" path="res://assets/Fonts/vcr_osd_mono/VCR_OSD_MONO_1.001.ttf" id="13_3t73v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ba6a4"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhwok"]
+bg_color = Color(0.229495, 0.202935, 0.61182, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4fxp"]
+bg_color = Color(0.0941176, 0.0784314, 0.298039, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[node name="CameraSystem" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gxu2p")
+
+[node name="camaraChange" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_3gt48")
+
+[node name="Cameras" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="0" type="TextureRect" parent="Cameras"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_u1x7x")
+expand_mode = 2
+
+[node name="1" type="TextureRect" parent="Cameras"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_3gt48")
+expand_mode = 2
+
+[node name="2" type="TextureRect" parent="Cameras"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_3t73v")
+expand_mode = 2
+
+[node name="3" type="TextureRect" parent="Cameras"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_yhwok")
+expand_mode = 2
+
+[node name="4" type="TextureRect" parent="Cameras"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_p4fxp")
+expand_mode = 2
+
+[node name="5" type="TextureRect" parent="Cameras"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_usyeu")
+expand_mode = 2
+
+[node name="6" type="TextureRect" parent="Cameras"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_rb1pm")
+expand_mode = 2
+
+[node name="7" type="TextureRect" parent="Cameras"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_u1g1r")
+expand_mode = 2
+
+[node name="disabledRectangle" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 1154.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(0.223103, 0.223103, 0.223103, 1)
+
+[node name="static" type="ColorRect" parent="."]
+material = ExtResource("4_ba6a4")
+layout_mode = 0
+offset_right = 1154.0
+offset_bottom = 647.0
+mouse_filter = 2
+
+[node name="CameraSelector" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.764
+anchor_top = 0.569
+anchor_right = 0.986
+anchor_bottom = 0.971
+offset_left = -0.128052
+offset_top = 0.287994
+offset_right = 3.12793
+offset_bottom = -1.20807
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+mouse_default_cursor_shape = 3
+
+[node name="border" type="ColorRect" parent="CameraSelector"]
+layout_mode = 0
+offset_right = 260.0
+offset_bottom = 260.0
+
+[node name="bg" type="ColorRect" parent="CameraSelector"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 258.0
+offset_bottom = 258.0
+color = Color(0, 0, 0, 1)
+
+[node name="Buttons" type="GridContainer" parent="CameraSelector"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.015
+anchor_top = 0.012
+anchor_right = 1.0
+anchor_bottom = 0.996
+offset_left = 1.115
+offset_top = -0.108
+offset_right = 1.0
+offset_bottom = 0.0359802
+mouse_default_cursor_shape = 3
+columns = 7
+
+[node name="0" type="Button" parent="CameraSelector/Buttons"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_default_cursor_shape = 3
+theme_override_fonts/font = ExtResource("3_rb1pm")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
+text = "0"
+
+[node name="1" type="Button" parent="CameraSelector/Buttons"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_default_cursor_shape = 3
+theme_override_fonts/font = ExtResource("3_rb1pm")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
+text = "1
+"
+
+[node name="2" type="Button" parent="CameraSelector/Buttons"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_default_cursor_shape = 3
+theme_override_fonts/font = ExtResource("3_rb1pm")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
+text = "2"
+
+[node name="3" type="Button" parent="CameraSelector/Buttons"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_default_cursor_shape = 3
+theme_override_fonts/font = ExtResource("3_rb1pm")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
+text = "3"
+
+[node name="4" type="Button" parent="CameraSelector/Buttons"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_default_cursor_shape = 3
+theme_override_fonts/font = ExtResource("3_rb1pm")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
+text = "4"
+
+[node name="5" type="Button" parent="CameraSelector/Buttons"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_default_cursor_shape = 3
+theme_override_fonts/font = ExtResource("3_rb1pm")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
+text = "5"
+
+[node name="6" type="Button" parent="CameraSelector/Buttons"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_default_cursor_shape = 3
+theme_override_fonts/font = ExtResource("3_rb1pm")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
+text = "6"
+
+[node name="7" type="Button" parent="CameraSelector/Buttons"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_default_cursor_shape = 3
+theme_override_fonts/font = ExtResource("3_rb1pm")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
+text = "7"
+
+[node name="CameraToggle" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 568.0
+offset_right = -882.0
+offset_bottom = 648.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 20
+
+[node name="CameraButton" type="Button" parent="CameraToggle"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_3t73v")
+theme_override_styles/focus = SubResource("StyleBoxFlat_yhwok")
+theme_override_styles/normal = SubResource("StyleBoxFlat_p4fxp")
+text = "RETURN"
+
+[connection signal="bonnieMinigameResult" from="." to="." method="_on_bonnie_minigame_result"]
+[connection signal="pressed" from="CameraToggle/CameraButton" to="." method="_on_camera_button_pressed"]
