@@ -1,8 +1,11 @@
 class_name CameraSystem
 extends Control
 
+var audio_manager: AudioManager
+
 signal bonnieMinigameResult(result : bool)
 signal foxyMinigameResult(result : bool)
+
 enum Animatronics {
 	BONNIE,
 	CHICA,
@@ -58,6 +61,13 @@ func _process(delta : float) -> void:
 	debug()
 
 func toggle() -> void:
+	audio_manager.playSound(AudioManager.SFX.CAMERA_CLICKED)
+	if !self.visible:
+		audio_manager.playMusic(audio_manager.BM.CREEPY)
+		disableCameras(0.15)
+	else:
+		audio_manager.playMusic(audio_manager.BM.UPBEAT)
+		
 	self.visible = !self.visible
 ## A method that behins the find Bonnie's guitar minigame.
 ## roomNum: (-1) for a random, pool based room OR a manual room number. Selecting a room number may cause undesired behaviour.
@@ -129,7 +139,7 @@ func changeCamera(nextCamera : int) -> void:
 	cameraList[currentCamera].visible = false
 	currentCamera = nextCamera
 	cameraList[currentCamera].visible = true
-	$camaraChange.play()
+	audio_manager.playSound(audio_manager.SFX.CAMERA_CLICKED)
 	disableCameras(0.25)
 
 func disableCameras(time : float) -> void:

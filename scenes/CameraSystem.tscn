@@ -12,8 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://dyba8y88h1ps" path="res://assets/Camera Backgrounds/the_end.jpg" id="7_usyeu"]
 [ext_resource type="Texture2D" uid="uid://byguux5u0u2sm" path="res://assets/Camera Backgrounds/pokemon.jpg" id="9_u1g1r"]
 [ext_resource type="Texture2D" uid="uid://coagj7hapu1s3" path="res://assets/flash.png" id="11_yhwok"]
-[ext_resource type="AudioStream" uid="uid://ddyacnuknns13" path="res://assets/Audio/sfx/cameraChange.mp3" id="12_3gt48"]
 [ext_resource type="FontFile" uid="uid://ct2bf8irj7o1w" path="res://assets/Fonts/vcr_osd_mono/VCR_OSD_MONO_1.001.ttf" id="13_3t73v"]
+[ext_resource type="PackedScene" uid="uid://d1w6xdl5sdk4p" path="res://scenes/AudioManager.tscn" id="14_yhwok"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yhwok"]
 radius = 129.062
@@ -48,9 +48,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gxu2p")
-
-[node name="camaraChange" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("12_3gt48")
 
 [node name="Cameras" type="Control" parent="."]
 layout_mode = 1
@@ -147,6 +144,14 @@ grow_vertical = 2
 texture = ExtResource("9_u1g1r")
 expand_mode = 2
 
+[node name="disabledRectangle" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 1154.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(0.223103, 0.223103, 0.223103, 1)
+
 [node name="flashDetection" type="Area2D" parent="."]
 position = Vector2(564, 349)
 
@@ -156,14 +161,6 @@ shape = SubResource("CircleShape2D_yhwok")
 [node name="PointLight2D" type="PointLight2D" parent="flashDetection"]
 energy = 0.6
 texture = ExtResource("11_yhwok")
-
-[node name="disabledRectangle" type="ColorRect" parent="."]
-visible = false
-layout_mode = 0
-offset_right = 1154.0
-offset_bottom = 648.0
-mouse_filter = 2
-color = Color(0.223103, 0.223103, 0.223103, 1)
 
 [node name="static" type="ColorRect" parent="."]
 material = ExtResource("4_ba6a4")
@@ -332,6 +329,8 @@ offset_left = 1022.0
 offset_top = 583.0
 offset_right = 1062.0
 offset_bottom = 606.0
+
+[node name="AudioManager" parent="." instance=ExtResource("14_yhwok")]
 
 [connection signal="bonnieMinigameResult" from="." to="." method="_on_bonnie_minigame_result"]
 [connection signal="area_entered" from="flashDetection" to="." method="_on_flash_detection_area_entered"]
