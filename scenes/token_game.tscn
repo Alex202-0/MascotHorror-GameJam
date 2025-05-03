@@ -225,6 +225,19 @@ text = "INTER DIMENSIONAL CAMERA SYSTEM"
 visible = false
 layout_mode = 1
 
+[node name="FreddyButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -139.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "summon fazbear"
+
 [connection signal="tokens_changed" from="." to="ClickerContainer/Stats" method="_on_token_game_tokens_changed"]
 [connection signal="tokens_changed" from="." to="ClickerContainer/Stats" method="_on_cookie_game_tokens_changed"]
 [connection signal="tps_changed" from="." to="ClickerContainer/Stats" method="_on_token_game_tps_changed"]
@@ -232,3 +245,4 @@ layout_mode = 1
 [connection signal="pressed" from="HorizontalBar/HBoxContainer/ClickerButton" to="." method="_on_clicker_button_pressed"]
 [connection signal="pressed" from="HorizontalBar/HBoxContainer/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
 [connection signal="pressed" from="CameraToggle/CameraButton" to="." method="_on_camera_button_pressed"]
+[connection signal="pressed" from="FreddyButton" to="." method="_on_freddy_button_pressed"]

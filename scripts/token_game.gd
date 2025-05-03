@@ -11,6 +11,10 @@ var tps_mult = 1
 var generator_data := {}
 var income_timer := 0.0
 
+# === Freddy System ===
+var freddy_spawn_timer: Timer
+var freddy_count := 0
+
 signal tokens_changed
 signal tps_changed
 
@@ -18,6 +22,9 @@ func _ready() -> void:
 	load_data()
 	emit_signal("tokens_changed", tokens)
 	emit_signal("tps_changed", tokens_per_second)
+	freddy_spawn_timer = Timer.new()
+	add_child(freddy_spawn_timer)
+	freddy_spawn_timer.timeout.connect(_on_freddy_attack)
 	
 
 func _process(delta: float) -> void:
@@ -26,6 +33,7 @@ func _process(delta: float) -> void:
 		tokens += tokens_per_second
 		income_timer = 0
 		emit_signal("tokens_changed", tokens)
+		
 
 func add_generator_income(generator_id: String, tps: float):
 	if generator_id in generator_data:
@@ -96,3 +104,36 @@ func _on_upgrade_button_pressed() -> void:
 
 func _on_camera_button_pressed() -> void:
 	camera_system.toggle()
+	
+# Freddy Stuff	
+func summon_freddy():
+	var freddy_popup = preload("res://scenes/animatronics/freddy.tscn").instantiate()
+	add_child(freddy_popup) # <- ADD FIRST!
+	var demand = calculate_freddy_tax()
+	print("Current self is: ", self)
+	freddy_popup.setup(demand, self)
+
+func calculate_freddy_tax() -> int:
+	var manual_rate = amount_per_click * click_mult
+	var auto_rate = tokens_per_second
+	var bonus = 100 # Change later.
+	return manual_rate + auto_rate + bonus
+
+func schedule_next_freddy_attack():
+	var delay = randf_range(20.0, 40.0) / max(1, freddy_count)
+	freddy_spawn_timer.start(delay)
+
+func _on_freddy_attack():
+	summon_freddy()
+	schedule_next_freddy_attack()
+
+func temp_game_over():
+	print("TEMP GAME OVER triggered by Freddy!")
+	# Here you could later open a GameOver screen or reset.
+	
+
+
+
+func _on_freddy_button_pressed() -> void:
+	if $ClickerContainer.visible:
+		summon_freddy()
