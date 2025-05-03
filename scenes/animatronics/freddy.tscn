@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://duj5e8orxplbr"]
+
+[ext_resource type="Script" uid="uid://di81qpsufwpqh" path="res://scripts/animatronic/freddy.gd" id="1_ruryx"]
+[ext_resource type="Texture2D" uid="uid://cysr4dwehxwev" path="res://assets/freddy.png" id="2_4lm8a"]
+
+[node name="Freddy" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 851.0
+offset_top = 119.0
+offset_right = -1.0
+offset_bottom = -134.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ruryx")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 389.0
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_4lm8a")
+expand_mode = 1
+
+[node name="DemandLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Freddy demands 125 FazTokens!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "You have mere seconds."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PayButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Pay Now!"
+
+[connection signal="pressed" from="VBoxContainer/PayButton" to="." method="_on_pay_button_pressed"]
