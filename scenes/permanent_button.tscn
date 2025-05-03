@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bnhajok47yisu"]
 
-[ext_resource type="Script" uid="uid://cthmk8yhewqpq" path="res://scripts/permanent_button.gd" id="1_lypej"]
+[ext_resource type="Script" path="res://scripts/permanent_button.gd" id="1_lypej"]
 
 [node name="PermanentButton" type="Button"]
 offset_right = 8.0

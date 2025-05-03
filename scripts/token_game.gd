@@ -3,6 +3,9 @@ extends Control
 const save_path = "user://userdata.save"
 
 @onready var camera_system: CameraSystem = $CameraSystem
+@onready var audio_manager: AudioManager = $AudioManager
+
+
 var tokens = 0
 var amount_per_click = 1
 var tokens_per_second := 0.0
@@ -10,6 +13,8 @@ var click_mult = 1
 var tps_mult = 1
 var generator_data := {}
 var income_timer := 0.0
+
+
 
 # === Freddy System ===
 var freddy_spawn_timer: Timer
@@ -25,6 +30,8 @@ func _ready() -> void:
 	freddy_spawn_timer = Timer.new()
 	add_child(freddy_spawn_timer)
 	freddy_spawn_timer.timeout.connect(_on_freddy_attack)
+	audio_manager.playMusic(audio_manager.BM.UPBEAT)
+	camera_system.audio_manager = audio_manager
 	
 
 func _process(delta: float) -> void:
@@ -33,7 +40,8 @@ func _process(delta: float) -> void:
 		tokens += tokens_per_second
 		income_timer = 0
 		emit_signal("tokens_changed", tokens)
-		
+	if audio_manager.currentBackgroundMusic:
+		$Label.text = audio_manager.currentBackgroundMusic.name
 
 func add_generator_income(generator_id: String, tps: float):
 	if generator_id in generator_data:
@@ -50,7 +58,8 @@ func _update_total_income():
 
 func save_data():
 	var data = {
-		"tokens": tokens
+		"tokens": tokens,
+		"amount_per_click" : amount_per_click,
 	}
 	
 	var file = FileAccess.open(save_path, FileAccess.WRITE)
@@ -68,6 +77,7 @@ func load_data():
 		save_data()
 
 func _on_click_button_button_down() -> void:
+	audio_manager.playSound(audio_manager.SFX.FAZTOKEN_CLICKED)
 	print("amount per click: ", amount_per_click * click_mult)
 	print("tokens per second: ", tokens_per_second)
 	tokens += amount_per_click * click_mult
@@ -75,6 +85,7 @@ func _on_click_button_button_down() -> void:
 	save_data()
 	
 func apply_upgrade(type: String):
+	audio_manager.playSound(audio_manager.SFX.UPGRADE_BUTTON_CLICKED)
 	match type:
 		"click_power":
 			amount_per_click += 1 * click_mult

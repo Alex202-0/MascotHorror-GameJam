@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1w6xdl5sdk4p"]
+
+[ext_resource type="Script" uid="uid://cid0qy4ppeire" path="res://scripts/AudioManager.gd" id="1_hux41"]
+[ext_resource type="AudioStream" uid="uid://4ug0ddxf07l1" path="res://assets/Audio/music/temp.mp3" id="2_4tesi"]
+[ext_resource type="AudioStream" uid="uid://ddyacnuknns13" path="res://assets/Audio/sfx/cameraChange.mp3" id="2_v6v0x"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_hux41")
+
+[node name="BackgroundMusic" type="Node" parent="."]
+
+[node name="upbeat" type="AudioStreamPlayer" parent="BackgroundMusic"]
+stream = ExtResource("2_4tesi")
+
+[node name="cameraStatic" type="AudioStreamPlayer" parent="BackgroundMusic"]
+stream = ExtResource("2_4tesi")
+pitch_scale = 0.3
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="onFazTokenClick" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("2_v6v0x")
+
+[node name="onUpgradeButtonClick" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("2_v6v0x")
+
+[node name="onGenericButtonPressed" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("2_v6v0x")
+
+[node name="onCameraButtonClicked" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("2_v6v0x")
+
+[node name="onBonnieGuitarSpawn" type="AudioStreamPlayer" parent="SFX"]
+
+[node name="onChicaSpawn" type="AudioStreamPlayer" parent="SFX"]
+
+[node name="onFoxySpawn" type="AudioStreamPlayer" parent="SFX"]
+
+[node name="onFreddySpawn" type="AudioStreamPlayer" parent="SFX"]
+
+[node name="onBonnieJumpscare" type="AudioStreamPlayer" parent="SFX"]
+
+[node name="onChicaJumpscare" type="AudioStreamPlayer" parent="SFX"]
+
+[node name="onFoxyJumpscare" type="AudioStreamPlayer" parent="SFX"]
+
+[node name="onFreddyJumpscare" type="AudioStreamPlayer" parent="SFX"]
+
+[connection signal="finished" from="BackgroundMusic/upbeat" to="." method="_on_upbeat_finished"]
+[connection signal="finished" from="BackgroundMusic/cameraStatic" to="." method="_on_camera_static_finished"]
