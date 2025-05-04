@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=3 uid="uid://dymrop508ml83"]
+
+[ext_resource type="Script" uid="uid://bbedtcit0vox1" path="res://scripts/flashlight.gd" id="1_0ywi5"]
+[ext_resource type="Texture2D" uid="uid://coagj7hapu1s3" path="res://assets/flash.png" id="2_bh8a8"]
+[ext_resource type="FontFile" uid="uid://b8pgtq248qfvd" path="res://assets/Fonts/TeenyTinyPixls-o2zo.ttf" id="3_bh8a8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yhwok"]
+radius = 129.062
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_usyeu"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u1g1r"]
+content_margin_top = 1.0
+bg_color = Color(0.87451, 1, 0.203922, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_bis5n"]
+font = ExtResource("3_bh8a8")
+font_size = 15
+
+[node name="flashlight" type="Area2D"]
+script = ExtResource("1_0ywi5")
+defaultMaxDuration = 5.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yhwok")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 0.6
+texture = ExtResource("2_bh8a8")
+
+[node name="FlashlightBattery" type="ProgressBar" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -166.0
+offset_top = 17.0
+offset_right = 39.0
+offset_bottom = 27.0
+grow_vertical = 0
+rotation = 1.5708
+theme_override_styles/background = SubResource("StyleBoxFlat_usyeu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_u1g1r")
+max_value = 1.0
+value = 0.01
+fill_mode = 1
+show_percentage = false
+
+[node name="f" type="Label" parent="."]
+offset_left = -174.0
+offset_top = -2.0
+offset_right = -162.0
+offset_bottom = 16.0
+text = "F"
+label_settings = SubResource("LabelSettings_bis5n")

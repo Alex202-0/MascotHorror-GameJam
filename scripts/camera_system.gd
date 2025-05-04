@@ -1,31 +1,41 @@
+## A Control based class that simulates FNAF's camera system. 
 class_name CameraSystem
 extends Control
 
+## Used to play various sound effects and background music.
 var audio_manager: AudioManager
 
-signal bonnieMinigameResult(result : bool)
-signal foxyMinigameResult(result : bool)
+## UNUSED Triggered when the find bonnie guitar minigame comes to and end. result will be true if the player won
+## false otherwise.
+signal bonnieMinigameResult(result : bool) 
+## UNUSED Triggered when the find foxy minigame comes to and end. result will be true if the player won
+## false otherwise.
+signal foxyMinigameResult(result : bool) 
 
+
+## An enumerator to avoid using strings. Contains the name of all implemented animatronics
 enum Animatronics {
 	BONNIE,
-	CHICA,
-	FREDDY,
+	CHICA, # unused
+	FREDDY, #unused
 	FOXY
 }
+
+@onready var flashlight : Flashlight = $flashlight
 
 
 
 # Camera and button handlers
-var cameraList : Array[TextureRect] 
-var buttonList : Array[Button]
-var currentCamera : int = 0
-var unlockedButtonCounter : int = 0
-var displayCameraStaticTimer : float = 0
+var cameraList : Array[TextureRect]  ## A list of references to all the cameras (TextureRect)
+var buttonList : Array[Button] ## A list of references to all the camera buttons
+var currentCamera : int = 0 ## Represents the current camera.
+var unlockedButtonCounter : int = 0 ## How many cameras the player has unlocked.
+var displayCameraStaticTimer : float = 0 ## Determines how long the static effect last when opening, closing and switching cams.
 
 # Animatronic minigame scenes
-var bonnieGuitar : PackedScene = preload("res://scenes/CameraMinigames/bonnieGuitar.tscn")
-var foxy : PackedScene = preload("res://scenes/CameraMinigames/foxy.tscn")
-# Where each of the animatronic minigames can take place
+var bonnieGuitar : PackedScene = preload("res://scenes/CameraMinigames/bonnieGuitar.tscn") ## Used to instantiate the guitar.
+var foxy : PackedScene = preload("res://scenes/CameraMinigames/foxy.tscn") ## Used to instantiate Foxy.
+## A map pairing each anamatronic to their spawnable cameras
 var animatronicSpawns : Dictionary[Animatronics, Array] = {
 	Animatronics.BONNIE : [0,2,4,6],
 	Animatronics.CHICA  : [1,3,5,7],
@@ -33,33 +43,44 @@ var animatronicSpawns : Dictionary[Animatronics, Array] = {
 	Animatronics.FOXY : [0,1,2,3,4,5,6,7]
 }
 
-# Animatronic minigame variables
-var activeGuitarRooms : Array[int] = []                   
-var activeGuitarTimers : Array[float] = []
-var foxyRoom : int = -1
-var foxyFindTimer : float = 0
-var foxyVanquishTimer : float = 2.0
-var foxyInFlashlight : bool = false
+# -=== Animatronic minigame variables ===-
+
+#Bonnie
+var activeGuitarRooms : Array[int] = [] ## Containes a list of the camera indexes where a guitar currently exists.            
+var activeGuitarTimers : Array[float] = [] ## Contains a timer to the corresponding guitar. Eg [ guitar0, guitar1 ] [ guitar0Timer, guitarTimer1]  
+
+# Foxy
+var foxyRoom : int = -1 ## Where Foxy is currently in. -1 if Foxy is inactive.
+var foxyFindTimer : float = 0 ## How much time (in seconds) the player has to find foxy.
+var foxyVanquishTimer : float = 2.0 ## How long the player must hover the flashlight over Foxy for him to leave.
+var foxyInFlashlight : bool = false ## If the flashlight is hovering Foxy.
+
 
 
 func _ready() -> void:
+	# Save a reference to all cameras
 	for camera in $Cameras.get_children():
 		cameraList.push_back(camera)
+	# Save a reference to all buttons
 	for button in $CameraSelector/Buttons.get_children():
 		buttonList.push_back(button)
+	# Hide static effect
 	$disabledRectangle.visible = false
+	# Make the default camera and button visible
 	cameraList[currentCamera].visible = true
 	buttonList[unlockedButtonCounter].visible = true
 
 func _process(delta : float) -> void:
+	# Check if any of the buttons were pressed, switch the camera if so.
 	for cameraButton : Button in $CameraSelector/Buttons.get_children():
 		if cameraButton.button_pressed && int(cameraButton.name) != currentCamera:
 			changeCamera(int(cameraButton.name))
-	if visible:
-		$flashDetection.global_position = get_global_mouse_position()
+			
+	handleFlashlight()
 	handleTimers(delta)
 	debug()
 
+## Enables/disables the camera system
 func toggle() -> void:
 	audio_manager.playSound(AudioManager.SFX.CAMERA_CLICKED)
 	if !self.visible:
@@ -94,6 +115,7 @@ func activateBonnie(roomNum : int, findTime : float) -> bool:
 		activeGuitarTimers.push_back(findTime)
 		spawnGuitar(randomRoom)
 		return true
+## A method that spawns a guitar at a given room number.
 func spawnGuitar(roomNum : int) -> void:
 	var guitar : BonnieGuitar = bonnieGuitar.instantiate()
 	cameraList[roomNum].add_child(guitar)
@@ -118,7 +140,7 @@ func activateFoxy(roomNum : int, findTime : float) -> bool:
 			foxyFindTimer = findTime
 			foxyRoom = randomRoom
 			foxyVanquishTimer = 2
-			var cameraToChange : Button = $CameraSelector/Buttons.get_child(foxyRoom)
+			var cameraToChange : Button = buttonList[foxyRoom]
 			cameraToChange.modulate = Color(255,0,0)
 			return true
 		else:
@@ -128,13 +150,13 @@ func activateFoxy(roomNum : int, findTime : float) -> bool:
 			foxyFindTimer = findTime
 			foxyRoom = roomNum
 			foxyVanquishTimer = 2
-			var cameraToChange : Button = $CameraSelector/Buttons.get_child(foxyRoom)
+			var cameraToChange : Button = buttonList[foxyRoom]
 			cameraToChange.modulate = Color(255,0,0)
 			return true
 	else:
 		return false
 	
-	
+## Changes the camera to the given number. Called by each button pressed.
 func changeCamera(nextCamera : int) -> void:
 	cameraList[currentCamera].visible = false
 	currentCamera = nextCamera
@@ -142,19 +164,28 @@ func changeCamera(nextCamera : int) -> void:
 	audio_manager.playSound(audio_manager.SFX.CAMERA_CLICKED)
 	disableCameras(0.25)
 
+## Displays a static effect over the screen for 'time' seconds.
 func disableCameras(time : float) -> void:
 	displayCameraStaticTimer = time
 	$disabledRectangle.visible = true
-	
+
+## Enables the next available camera button.
 func unlockNextButton() -> void:
 	if unlockedButtonCounter < buttonList.size() -1:
 		unlockedButtonCounter+=1
 		buttonList[unlockedButtonCounter].visible = true
 
+## A function that enables and disables the flashlight.
+func handleFlashlight() -> void:
+	if Input.is_action_just_pressed("flashlight"):
+		flashlight.toggle()
+	flashlight.global_position = get_global_mouse_position()
 
-func handleTimers(delta : float) -> void:
-	$Label.text = str(foxyVanquishTimer)
+
 	
+
+## Deducs time from all timers and handles onTimeout events.
+func handleTimers(delta : float) -> void:
 	displayCameraStaticTimer = max(0, displayCameraStaticTimer-delta)
 	if displayCameraStaticTimer == 0:
 		$disabledRectangle.visible = false
@@ -182,19 +213,19 @@ func handleTimers(delta : float) -> void:
 	if foxyInFlashlight:
 		foxyVanquishTimer = max(0, foxyVanquishTimer-delta)
 	if foxyVanquishTimer == 0 && foxyRoom != -1:
-		for child in $Cameras.get_child(foxyRoom).get_children():
+		for child in cameraList[foxyRoom].get_children():
 			if child is Foxy:
-				$Cameras.get_child(foxyRoom).remove_child(child)
-				var cameraToChange : Button = $CameraSelector/Buttons.get_child(foxyRoom)
+				cameraList[foxyRoom].remove_child(child)
+				var cameraToChange : Button = buttonList[foxyRoom]
 				cameraToChange.modulate = Color(255,255,255)
 				foxyRoom = -1
 				foxyMinigameResult.emit(true)
 	foxyFindTimer = max(0, foxyFindTimer-delta)
 	if foxyRoom != -1 && foxyFindTimer == 0:
-		for child in $Cameras.get_child(foxyRoom).get_children():
+		for child in cameraList[foxyRoom].get_children():
 			if child is Foxy:
-				$Cameras.get_child(foxyRoom).remove_child(child)
-		var cameraToChange : Button = $CameraSelector/Buttons.get_child(foxyRoom)
+				cameraList[foxyRoom].remove_child(child)
+		var cameraToChange : Button = buttonList[foxyRoom]
 		cameraToChange.modulate = Color(255,255,255)
 		foxyRoom = -1
 		foxyVanquishTimer = 2.0
@@ -218,9 +249,7 @@ func _on_camera_button_pressed() -> void:
 
 func _on_flash_detection_area_entered(area: Area2D) -> void:
 	if area is Foxy && currentCamera == foxyRoom:
-		area.visible = true
 		foxyInFlashlight = true
 func _on_flash_detection_area_exited(area: Area2D) -> void :
 	if area is Foxy || currentCamera != foxyRoom:
-		area.visible = false
 		foxyInFlashlight = false
