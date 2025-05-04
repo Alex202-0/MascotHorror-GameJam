@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cki207k2rowkx" path="res://scripts/token_game.gd" id="1_xy0ej"]
 [ext_resource type="Texture2D" uid="uid://bo8swg5mf7co2" path="res://assets/FazToken-front.png" id="2_oth5x"]
 [ext_resource type="Script" uid="uid://du8jjj2y82sp4" path="res://scripts/stats.gd" id="3_c2xcv"]
-[ext_resource type="Script" path="res://scripts/generator_panel.gd" id="4_c2xcv"]
+[ext_resource type="Script" uid="uid://d2douju0ic1s8" path="res://scripts/generator_panel.gd" id="4_c2xcv"]
 [ext_resource type="FontFile" uid="uid://ct2bf8irj7o1w" path="res://assets/Fonts/vcr_osd_mono/VCR_OSD_MONO_1.001.ttf" id="4_oth5x"]
 [ext_resource type="Script" path="res://scripts/permUpgrade_panel.gd" id="5_v7djh"]
 [ext_resource type="PackedScene" uid="uid://dvi7q0rasu8s7" path="res://scenes/CameraSystem.tscn" id="7_dfwkr"]

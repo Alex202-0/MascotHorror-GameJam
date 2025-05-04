@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dvi7q0rasu8s7"]
+[gd_scene load_steps=23 format=3 uid="uid://dvi7q0rasu8s7"]
 
 [ext_resource type="Script" uid="uid://ollcg4mqpo7d" path="res://scripts/camera_system.gd" id="1_gxu2p"]
 [ext_resource type="Texture2D" uid="uid://0h6j5fp0l0u2" path="res://assets/Camera Backgrounds/sans.jpg" id="2_rb1pm"]
@@ -11,12 +11,48 @@
 [ext_resource type="Texture2D" uid="uid://culsxn2u2fc61" path="res://assets/Camera Backgrounds/malenia.jpg" id="6_p4fxp"]
 [ext_resource type="Texture2D" uid="uid://dyba8y88h1ps" path="res://assets/Camera Backgrounds/the_end.jpg" id="7_usyeu"]
 [ext_resource type="Texture2D" uid="uid://byguux5u0u2sm" path="res://assets/Camera Backgrounds/pokemon.jpg" id="9_u1g1r"]
+[ext_resource type="Texture2D" uid="uid://cgth1be5rbrry" path="res://assets/Camera Backgrounds/2-arcade-machine-screen-allan-swart.jpg" id="10_p4fxp"]
 [ext_resource type="Texture2D" uid="uid://coagj7hapu1s3" path="res://assets/flash.png" id="11_yhwok"]
+[ext_resource type="PackedScene" uid="uid://dymrop508ml83" path="res://scenes/flashlight.tscn" id="12_usyeu"]
 [ext_resource type="FontFile" uid="uid://ct2bf8irj7o1w" path="res://assets/Fonts/vcr_osd_mono/VCR_OSD_MONO_1.001.ttf" id="13_3t73v"]
 [ext_resource type="PackedScene" uid="uid://d1w6xdl5sdk4p" path="res://scenes/AudioManager.tscn" id="14_yhwok"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_yhwok"]
-radius = 129.062
+[sub_resource type="Animation" id="Animation_usyeu"]
+resource_name = "blink"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.433333, 0.833333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 0.72549), Color(1, 0, 0, 0.372549), Color(1, 0, 0, 0.372549)]
+}
+
+[sub_resource type="Animation" id="Animation_u1g1r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 0.72549)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u4pc2"]
+_data = {
+&"RESET": SubResource("Animation_u1g1r"),
+&"blink": SubResource("Animation_usyeu")
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ba6a4"]
 bg_color = Color(0, 0, 0, 1)
@@ -144,6 +180,38 @@ grow_vertical = 2
 texture = ExtResource("9_u1g1r")
 expand_mode = 2
 
+[node name="8" type="TextureRect" parent="Cameras"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_p4fxp")
+expand_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Cameras/8"]
+modulate = Color(1, 0, 0, 0.72549)
+layout_mode = 0
+offset_left = 254.0
+offset_top = 520.0
+offset_right = 510.0
+offset_bottom = 776.0
+scale = Vector2(0.175, 0.175)
+texture = ExtResource("11_yhwok")
+expand_mode = 1
+
+[node name="blink" type="AnimationPlayer" parent="Cameras/8"]
+libraries = {
+&"": SubResource("AnimationLibrary_u4pc2")
+}
+autoplay = "blink"
+
+[node name="flashlight" parent="." instance=ExtResource("12_usyeu")]
+position = Vector2(564, 349)
+defaultMaxDuration = 1.0
+
 [node name="disabledRectangle" type="ColorRect" parent="."]
 visible = false
 layout_mode = 0
@@ -151,16 +219,6 @@ offset_right = 1154.0
 offset_bottom = 648.0
 mouse_filter = 2
 color = Color(0.223103, 0.223103, 0.223103, 1)
-
-[node name="flashDetection" type="Area2D" parent="."]
-position = Vector2(564, 349)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="flashDetection"]
-shape = SubResource("CircleShape2D_yhwok")
-
-[node name="PointLight2D" type="PointLight2D" parent="flashDetection"]
-energy = 0.6
-texture = ExtResource("11_yhwok")
 
 [node name="static" type="ColorRect" parent="."]
 material = ExtResource("4_ba6a4")
@@ -300,6 +358,17 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
 theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
 text = "7"
 
+[node name="8" type="Button" parent="CameraSelector/Buttons"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_default_cursor_shape = 3
+theme_override_fonts/font = ExtResource("3_rb1pm")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ba6a4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ba6a4")
+text = "8"
+
 [node name="CameraToggle" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
@@ -322,17 +391,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_yhwok")
 theme_override_styles/normal = SubResource("StyleBoxFlat_p4fxp")
 text = "RETURN"
 
-[node name="Label" type="Label" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 1022.0
-offset_top = 583.0
-offset_right = 1062.0
-offset_bottom = 606.0
-
 [node name="AudioManager" parent="." instance=ExtResource("14_yhwok")]
 
 [connection signal="bonnieMinigameResult" from="." to="." method="_on_bonnie_minigame_result"]
-[connection signal="area_entered" from="flashDetection" to="." method="_on_flash_detection_area_entered"]
-[connection signal="area_exited" from="flashDetection" to="." method="_on_flash_detection_area_exited"]
 [connection signal="pressed" from="CameraToggle/CameraButton" to="." method="_on_camera_button_pressed"]
