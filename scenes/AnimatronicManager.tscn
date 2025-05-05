@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://er7pi1cfx2eq"]
+
+[ext_resource type="Script" uid="uid://dw784c3x3y20u" path="res://scripts/animatronic/animatronic_manager.gd" id="1_ebi02"]
+[ext_resource type="PackedScene" uid="uid://euvu0fs5nr55" path="res://scenes/JumpscareManager.tscn" id="2_5p3tg"]
+
+[node name="AnimatronicManager" type="Node"]
+script = ExtResource("1_ebi02")
+
+[node name="JumpscareManager" parent="." instance=ExtResource("2_5p3tg")]
+
+[node name="ActivityTimers" type="Node" parent="."]
+
+[node name="Bonnie" type="Timer" parent="ActivityTimers"]
+
+[node name="Chica" type="Timer" parent="ActivityTimers"]
+
+[node name="Foxy" type="Timer" parent="ActivityTimers"]
+
+[node name="Freddy" type="Timer" parent="ActivityTimers"]
+
+[node name="PunishmentTimers" type="Node" parent="."]
+
+[node name="camera" type="Timer" parent="PunishmentTimers"]
+
+[node name="upgrades" type="Timer" parent="PunishmentTimers"]
+
+[node name="click" type="Timer" parent="PunishmentTimers"]
+
+[node name="passive" type="Timer" parent="PunishmentTimers"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 563.0
+offset_top = 609.0
+offset_right = 603.0
+offset_bottom = 632.0
+
+[connection signal="timeout" from="ActivityTimers/Bonnie" to="." method="_on_bonnie_timeout"]
+[connection signal="timeout" from="ActivityTimers/Chica" to="." method="_on_chica_timeout"]
+[connection signal="timeout" from="ActivityTimers/Foxy" to="." method="_on_foxy_timeout"]
+[connection signal="timeout" from="ActivityTimers/Freddy" to="." method="_on_freddy_timeout"]
+[connection signal="timeout" from="PunishmentTimers/camera" to="." method="_on_camera_timeout"]
+[connection signal="timeout" from="PunishmentTimers/upgrades" to="." method="_on_upgrades_timeout"]
+[connection signal="timeout" from="PunishmentTimers/click" to="." method="_on_click_timeout"]
+[connection signal="timeout" from="PunishmentTimers/passive" to="." method="_on_passive_timeout"]

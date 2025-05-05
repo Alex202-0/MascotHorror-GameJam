@@ -7,7 +7,7 @@ extends Control
 var demand_amount: int
 var countdown: float = 10.0 # seconds to pay
 
-var main_scene: Node # We'll set this when creating the popup.
+var main_scene: TokenGame # We'll set this when creating the popup.
 
 func _ready():
 	pay_button.pressed.connect(_on_pay_button_pressed)
@@ -29,11 +29,12 @@ func _on_pay_button_pressed():
 	print(main_scene)
 	if main_scene.tokens >= demand_amount:
 		main_scene.tokens -= demand_amount
+		main_scene.freddyMinigameResult.emit(true)
 		main_scene.emit_signal("tokens_changed", main_scene.tokens)
 		queue_free()
 	else:
 		_on_timeout()
 
 func _on_timeout():
-	print("Freddy jumpscare (TEMP GAME OVER)")
+	main_scene.freddyMinigameResult.emit(false)
 	queue_free()

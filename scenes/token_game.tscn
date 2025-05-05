@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://diuu2t32vr71e"]
+[gd_scene load_steps=13 format=3 uid="uid://diuu2t32vr71e"]
 
 [ext_resource type="Script" uid="uid://cki207k2rowkx" path="res://scripts/token_game.gd" id="1_xy0ej"]
 [ext_resource type="Texture2D" uid="uid://bo8swg5mf7co2" path="res://assets/FazToken-front.png" id="2_oth5x"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dvi7q0rasu8s7" path="res://scenes/CameraSystem.tscn" id="7_dfwkr"]
 [ext_resource type="PackedScene" uid="uid://d1w6xdl5sdk4p" path="res://scenes/AudioManager.tscn" id="8_ed228"]
 [ext_resource type="Script" uid="uid://dnqrm6qh3bfv2" path="res://scripts/admin_panel.gd" id="9_uokk2"]
+[ext_resource type="PackedScene" uid="uid://er7pi1cfx2eq" path="res://scenes/AnimatronicManager.tscn" id="10_tmmio"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2xcv"]
 bg_color = Color(0.229495, 0.202935, 0.61182, 1)
@@ -241,15 +242,6 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "summon fazbear"
 
-[node name="AudioManager" parent="." instance=ExtResource("8_ed228")]
-
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_top = 2.0
-offset_right = 40.0
-offset_bottom = 25.0
-text = "as"
-
 [node name="AdminPanel" type="VBoxContainer" parent="."]
 visible = false
 layout_mode = 0
@@ -268,6 +260,17 @@ layout_mode = 2
 [node name="ConfirmButton" type="Button" parent="AdminPanel"]
 layout_mode = 2
 
+[node name="AudioManager" parent="." instance=ExtResource("8_ed228")]
+
+[node name="AnimatronicManager" parent="." node_paths=PackedStringArray("tokenGame", "cameraSystem", "audio_manager") instance=ExtResource("10_tmmio")]
+tokenGame = NodePath("..")
+cameraSystem = NodePath("../CameraSystem")
+audio_manager = NodePath("../AudioManager")
+bonnieSpawnTimer = 5.0
+foxySpawnTimer = 5.0
+freddySpawnTimer = 5.0
+
+[connection signal="freddyMinigameResult" from="." to="AnimatronicManager" method="_on_token_game_freddy_minigame_result"]
 [connection signal="tokens_changed" from="." to="ClickerContainer/Stats" method="_on_cookie_game_tokens_changed"]
 [connection signal="tokens_changed" from="." to="ClickerContainer/Stats" method="_on_token_game_tokens_changed"]
 [connection signal="tps_changed" from="." to="ClickerContainer/Stats" method="_on_token_game_tps_changed"]
@@ -275,4 +278,6 @@ layout_mode = 2
 [connection signal="pressed" from="HorizontalBar/HBoxContainer/ClickerButton" to="." method="_on_clicker_button_pressed"]
 [connection signal="pressed" from="HorizontalBar/HBoxContainer/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
 [connection signal="pressed" from="CameraToggle/CameraButton" to="." method="_on_camera_button_pressed"]
+[connection signal="bonnieMinigameResult" from="CameraSystem" to="AnimatronicManager" method="_on_camera_system_bonnie_minigame_result"]
+[connection signal="foxyMinigameResult" from="CameraSystem" to="AnimatronicManager" method="_on_camera_system_foxy_minigame_result"]
 [connection signal="pressed" from="FreddyButton" to="." method="_on_freddy_button_pressed"]
