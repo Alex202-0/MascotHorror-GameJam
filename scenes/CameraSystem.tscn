@@ -213,7 +213,6 @@ script = SubResource("GDScript_u1g1r")
 currentMinigame = NodePath("SubViewportContainer/SubViewport/SpringTrap")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Cameras/8"]
-visible = false
 layout_mode = 0
 offset_left = 355.0
 offset_top = 54.0

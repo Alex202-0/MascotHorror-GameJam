@@ -6,6 +6,7 @@ const save_path = "user://userdata.save"
 
 @onready var camera_system: CameraSystem = $CameraSystem
 @onready var audio_manager: AudioManager = $AudioManager
+@onready var animatronic_manager: AnimatronicManager = $AnimatronicManager
 
 signal freddyMinigameResult(result : bool)
 
@@ -21,7 +22,7 @@ var income_timer := 0.0
 # Punishment variables
 var buttonEnabled : bool = true
 var passiveIncomeEnabled : bool = true
-var ugradesEnabled : bool = true
+var upgradesEnabled : bool = true
 var camerasEnabled : bool = true
 
 
@@ -101,84 +102,108 @@ func _on_click_button_button_down() -> void:
 		save_data()
 	
 func apply_upgrade(type: String):
-	if ugradesEnabled:
-		audio_manager.playSound(audio_manager.SFX.UPGRADE_BUTTON_CLICKED)
+	audio_manager.playSound(audio_manager.SFX.UPGRADE_BUTTON_CLICKED)
+	
+	match type:
+		"click_power":
+			amount_per_click += 1 * click_mult
 		
-		match type:
-			"click_power":
-				amount_per_click += 1 * click_mult
-			
-			"faz_miner":
-				# No need to add TPS directly anymore
-				pass
-			
-			"fazminer_boost":
-				if "faz_miner" in generator_base_tps:
-					generator_base_tps["faz_miner"] *= 2
-					print("FazMiner base TPS doubled to ", generator_base_tps["faz_miner"])
-			
-			"faz_miner2":
-				pass
-			
-			"fazminer2_boost":
-				if "faz_miner2" in generator_base_tps:
-					generator_base_tps["faz_miner2"] *= 2
-					print("FazMiner 2.0 base TPS doubled to ", generator_base_tps["faz_miner2"])
-			
-			"autobot":
-				pass
-			
-			"autobot_boost":
-				if "autobot" in generator_base_tps:
-					generator_base_tps["autobot"] *= 2
-					print("Autobot base TPS doubled to ", generator_base_tps["autobot"])
-			
-			"server_rack":
-				pass
-			
-			"serverrack_boost":
-				if "server_rack" in generator_base_tps:
-					generator_base_tps["server_rack"] *= 2
-					print("ServerRack base TPS doubled to ", generator_base_tps["server_rack"])
-			
-			"freddynet":
-				pass
-			
-			"freddynet_boost":
-				if "freddynet" in generator_base_tps:
-					generator_base_tps["freddynet"] *= 2
-					print("FreddyNet base TPS doubled to ", generator_base_tps["freddynet"])
-			
-			"ghost_protocol":
-				pass
-			
-			"ghostprotocol_boost":
-				if "ghost_protocol" in generator_base_tps:
-					generator_base_tps["ghost_protocol"] *= 2
-					print("GhostProtocol base TPS doubled to ", generator_base_tps["ghost_protocol"])
-			
-			"quantum_core":
-				pass
-			
-			"quantumcore_boost":
-				if "quantum_core" in generator_base_tps:
-					generator_base_tps["quantum_core"] *= 2
-					print("QuantumCore base TPS doubled to ", generator_base_tps["quantum_core"])
-			
-			"click_doubler":
-				click_mult *= 2
-			
-			"double_income":
-				tps_mult *= 2
-			"flashlight_battery":
-				camera_system.flashlight.increaseMaxBattery(0.10)
-			"flashlight_recharge":
-				camera_system.flashlight.increaseRechargeRate(0.05)
-			"unlock_feature":
-				$UpgradeContainer/HBoxContainer/MysteryPanel.visible = true
+		"faz_miner":
+			# No need to add TPS directly anymore
+			pass
+		
+		"fazminer_boost":
+			if "faz_miner" in generator_base_tps:
+				generator_base_tps["faz_miner"] *= 2
+				print("FazMiner base TPS doubled to ", generator_base_tps["faz_miner"])
+		
+		"faz_miner2":
+			pass
+		
+		"fazminer2_boost":
+			if "faz_miner2" in generator_base_tps:
+				generator_base_tps["faz_miner2"] *= 2
+				print("FazMiner 2.0 base TPS doubled to ", generator_base_tps["faz_miner2"])
+		
+		"autobot":
+			pass
+		
+		"autobot_boost":
+			if "autobot" in generator_base_tps:
+				generator_base_tps["autobot"] *= 2
+				print("Autobot base TPS doubled to ", generator_base_tps["autobot"])
+		
+		"server_rack":
+			pass
+		
+		"serverrack_boost":
+			if "server_rack" in generator_base_tps:
+				generator_base_tps["server_rack"] *= 2
+				print("ServerRack base TPS doubled to ", generator_base_tps["server_rack"])
+		
+		"freddynet":
+			pass
+		
+		"freddynet_boost":
+			if "freddynet" in generator_base_tps:
+				generator_base_tps["freddynet"] *= 2
+				print("FreddyNet base TPS doubled to ", generator_base_tps["freddynet"])
+		
+		"ghost_protocol":
+			pass
+		
+		"ghostprotocol_boost":
+			if "ghost_protocol" in generator_base_tps:
+				generator_base_tps["ghost_protocol"] *= 2
+				print("GhostProtocol base TPS doubled to ", generator_base_tps["ghost_protocol"])
+		
+		"quantum_core":
+			pass
+		
+		"quantumcore_boost":
+			if "quantum_core" in generator_base_tps:
+				generator_base_tps["quantum_core"] *= 2
+				print("QuantumCore base TPS doubled to ", generator_base_tps["quantum_core"])
+		
+		"click_doubler":
+			click_mult *= 2
+		
+		"double_income":
+			tps_mult *= 2
+		"flashlight_battery":
+			camera_system.flashlight.increaseMaxBattery(0.10)
+		"flashlight_recharge":
+			camera_system.flashlight.increaseRechargeRate(0.05)
+		"unlock_feature":
+			$UpgradeContainer/HBoxContainer/MysteryPanel.visible = true
 	
 	# Always recalculate after any upgrade
 	_update_total_income()
+
+func animatronicButtonPressed(id : String) -> void:
+	var s = id
+	match id:
+		"bonnie":
+			camera_system.unlockNextButton()
+			if !animatronic_manager.bonnieEnabled:
+				animatronic_manager.activate(animatronic_manager.Animatronics.BONNIE)
+			else:
+				animatronic_manager.reduceSpawnTime(animatronic_manager.Animatronics.BONNIE)
+		"freddy":
+			# Make golden faztoken appear more often
+			if !animatronic_manager.freddyEnabled:
+				animatronic_manager.activate(animatronic_manager.Animatronics.FREDDY)
+			else:
+				animatronic_manager.reduceSpawnTime(animatronic_manager.Animatronics.FREDDY)
+		"foxy":
+			if !animatronic_manager.foxyEnabled:
+				animatronic_manager.activate(animatronic_manager.Animatronics.FOXY)
+			else:
+				animatronic_manager.reduceSpawnTime(animatronic_manager.Animatronics.FOXY)
+				
+			
+		
+		
 
 func _on_clicker_button_pressed() -> void:
 	$UpgradeContainer.visible = false

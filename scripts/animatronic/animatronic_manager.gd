@@ -39,7 +39,10 @@ func _ready() -> void:
 	for timer : Timer in $ActivityTimers.get_children():
 		timer.start()
 func _process(delta: float) -> void:
-	$Label.text = str($ActivityTimers/Freddy.time_left)
+	if Input.is_action_just_pressed("ui_down"):
+		tokenGame.tokens = 0
+	$Label.text = str($ActivityTimers/Bonnie.time_left)
+	$Label2.text = str(bonnieSpawnTimer)
 	if Input.is_action_just_pressed("enableFreddy"):
 		activate(Animatronics.FREDDY)
 		activate(Animatronics.BONNIE)
@@ -76,7 +79,7 @@ func punish (type : Punishment) -> void:
 			tokenGame.camerasEnabled = false
 		Punishment.UPGRADES:
 			$PunishmentTimers/upgrades.start()
-			tokenGame.ugradesEnabled = false
+			tokenGame.upgradesEnabled = false
 		Punishment.CLICK:
 			$PunishmentTimers/click.start()
 			tokenGame.buttonEnabled = false
@@ -88,7 +91,7 @@ func unpunish( type : Punishment) -> void:
 		Punishment.CAMERAS:
 			tokenGame.camerasEnabled = true
 		Punishment.UPGRADES:
-			tokenGame.ugradesEnabled = true
+			tokenGame.upgradesEnabled = true
 		Punishment.CLICK:
 			tokenGame.buttonEnabled = true
 		Punishment.PASSIVE:
@@ -120,7 +123,7 @@ func _on_bonnie_timeout() -> void:
 		if !(cameraSystem.activateBonnie(-1, randf_range(20.0,25.0))):
 			$ActivityTimers/Bonnie.start(bonnieSpawnTimer/2)
 		else:
-			bonnieSpawnTimer = randf_range(bonnieSpawnTimer-3, bonnieSpawnTimer+3)
+			$ActivityTimers/Bonnie.start(randf_range(bonnieSpawnTimer-3, bonnieSpawnTimer+3))
 			audio_manager.playSound(audio_manager.SFX.BONNIE_SPAWN)
 func _on_chica_timeout() -> void:
 	pass # Replace with function body.
@@ -129,13 +132,13 @@ func _on_foxy_timeout() -> void:
 		if !(cameraSystem.activateFoxy(-1, randf_range(5.0,6.0))):
 			$ActivityTimers/Foxy.start(foxySpawnTimer/2)
 		else:
-			foxySpawnTimer = randf_range(foxySpawnTimer-3, foxySpawnTimer+3)
+			$ActivityTimers/Foxy.start(randf_range(foxySpawnTimer-3, foxySpawnTimer+3))
 			audio_manager.playSound(audio_manager.SFX.FOXY_SPAWN)
 func _on_freddy_timeout() -> void:
 	if freddyEnabled:
 		audio_manager.playSound(audio_manager.SFX.FREDDY_SPAWN)
 		tokenGame.summon_freddy()
-		freddySpawnTimer = randf_range(freddySpawnTimer-3, freddySpawnTimer+3)
+		$ActivityTimers/Freddy.start(randf_range(freddySpawnTimer-3, freddySpawnTimer+3))
 		
 # -=== Animatronic minigame result methods ===-
 func _on_camera_system_bonnie_minigame_result(result: bool) -> void:
@@ -147,7 +150,7 @@ func _on_camera_system_bonnie_minigame_result(result: bool) -> void:
 		punish(Punishment.PASSIVE)
 func _on_camera_system_foxy_minigame_result(result: bool) -> void:
 	if result:
-		tokenGame.tokens *= 1.03
+		tokenGame.tokens *= 2.00
 	else:
 		jumpscare_manager.playJumpscare(jumpscare_manager.Animatronics.FOXY)
 		punish(Punishment.CAMERAS)
