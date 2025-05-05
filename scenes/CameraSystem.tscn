@@ -263,7 +263,6 @@ color = Color(0.169245, 0.169245, 0.169245, 1)
 
 [node name="flashlight" parent="." instance=ExtResource("12_usyeu")]
 position = Vector2(564, 349)
-defaultMaxDuration = 1.0
 
 [node name="disabledRectangle" type="ColorRect" parent="."]
 visible = false
@@ -446,6 +445,7 @@ text = "RETURN"
 
 [node name="AudioManager" parent="." instance=ExtResource("14_yhwok")]
 
-[connection signal="bonnieMinigameResult" from="." to="." method="_on_bonnie_minigame_result"]
 [connection signal="pressed" from="Cameras/8/joystick/Button" to="Cameras/8" method="_on_button_pressed"]
+[connection signal="area_entered" from="flashlight" to="." method="_on_flashlight_area_entered"]
+[connection signal="area_exited" from="flashlight" to="." method="_on_flashlight_area_exited"]
 [connection signal="pressed" from="CameraToggle/CameraButton" to="." method="_on_camera_button_pressed"]

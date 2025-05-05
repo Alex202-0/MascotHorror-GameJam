@@ -240,16 +240,16 @@ func debug() -> void:
 		if Input.is_action_just_pressed("trigger bonnie guitar"):
 			activateBonnie(-1, 10)
 		if Input.is_action_just_pressed("trigger foxy"):
-			activateFoxy(-1,5)
-func _on_bonnie_minigame_result(result: bool) -> void:
-	print("Player won minigame? " + str(result))
+			activateFoxy(-1,20)
+
 func _on_camera_button_pressed() -> void:
 	toggle()
 
-
-func _on_flash_detection_area_entered(area: Area2D) -> void:
+func _on_flashlight_area_entered(area: Area2D) -> void:
 	if area is Foxy && currentCamera == foxyRoom:
 		foxyInFlashlight = true
-func _on_flash_detection_area_exited(area: Area2D) -> void :
+		area.visible = true
+func _on_flashlight_area_exited(area: Area2D) -> void:
 	if area is Foxy || currentCamera != foxyRoom:
 		foxyInFlashlight = false
+		area.visible = false
