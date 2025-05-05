@@ -1,26 +1,32 @@
+## A class that handles all audio being played in the game.
 class_name AudioManager
 extends Node
 
-
+## Current background music that is playing.
 var currentBackgroundMusic : AudioStreamPlayer
 
+
+## Enumerator containing all possible background music.
 enum BM {
 	UPBEAT,
 	CREEPY
 }
 
+## An enumerator containing all posible sound effects.
 enum SFX {
 	FAZTOKEN_CLICKED, UPGRADE_BUTTON_CLICKED, CAMERA_CLICKED, GENERIC_BUTTON,
 	BONNIE_SPAWN, CHICA_SPAWN, FOXY_SPAWN, FREDDY_SPAWN,
 	BONNIE_JUMPSCARE, CHICA_JUMPSCARE, FOXY_JUMPSCARE, FREDDY_JUMPSCARE
 }
 
+## A map that pairs each enumerator with its respective AudioStreamPlayer for music.
 var musicMap : Dictionary[BM, AudioStreamPlayer]
-
+## A map that pairs each enumerator with its respective AudioStreamPlayer for sound effects.
 var sfxMap : Dictionary[SFX, AudioStreamPlayer]
 
 
 func _ready() -> void:
+	# Initialize the maps
 	musicMap  = {
 	BM.UPBEAT : $BackgroundMusic/upbeat,
 	BM.CREEPY : $BackgroundMusic/cameraStatic
@@ -32,6 +38,8 @@ func _ready() -> void:
 }
 
 
+## A function that plays the passed in music. For all available music tracks,
+## write AudioManager.BM. , this will show a list of all the possible enumerators.
 func playMusic(musicType : BM) -> void:
 	if currentBackgroundMusic:
 		currentBackgroundMusic.stop()
@@ -41,10 +49,13 @@ func playMusic(musicType : BM) -> void:
 		currentBackgroundMusic = musicMap[musicType]
 		currentBackgroundMusic.play()
 
-
+## A function that plays the passed in music. For all available sound effects,
+## write AudioManager.SFX. , this will show a list of all the possible enumerators.
 func playSound( sfx : SFX) -> void:
 	sfxMap[sfx].play()
 
+
+# Music looping signals
 func _on_upbeat_finished() -> void:
 	$BackgroundMusic/upbeat.play()
 func _on_camera_static_finished() -> void:

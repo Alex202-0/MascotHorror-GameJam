@@ -167,7 +167,10 @@ func apply_upgrade(type: String):
 		
 		"double_income":
 			tps_mult *= 2
-		
+		"flashlight_battery":
+			camera_system.flashlight.increaseMaxBattery(0.10)
+		"flashlight_recharge":
+			camera_system.flashlight.increaseRechargeRate(0.05)
 		"unlock_feature":
 			$UpgradeContainer/HBoxContainer/MysteryPanel.visible = true
 	
