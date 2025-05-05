@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://buld0qhcnr3sk"]
+
+[ext_resource type="Script" uid="uid://dfoqrp1rs58sy" path="res://scripts/animatronic_button.gd" id="1_7fvce"]
+
+[node name="GeneratorButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+autowrap_mode = 2
+script = ExtResource("1_7fvce")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

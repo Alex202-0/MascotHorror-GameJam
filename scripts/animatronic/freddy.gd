@@ -10,7 +10,6 @@ var countdown: float = 10.0 # seconds to pay
 var main_scene: TokenGame # We'll set this when creating the popup.
 
 func _ready():
-	pay_button.pressed.connect(_on_pay_button_pressed)
 	set_process(true)
 
 func _process(delta):

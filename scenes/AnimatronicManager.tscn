@@ -34,6 +34,12 @@ offset_top = 609.0
 offset_right = 603.0
 offset_bottom = 632.0
 
+[node name="Label2" type="Label" parent="."]
+offset_left = 871.0
+offset_top = 601.0
+offset_right = 911.0
+offset_bottom = 624.0
+
 [connection signal="timeout" from="ActivityTimers/Bonnie" to="." method="_on_bonnie_timeout"]
 [connection signal="timeout" from="ActivityTimers/Chica" to="." method="_on_chica_timeout"]
 [connection signal="timeout" from="ActivityTimers/Foxy" to="." method="_on_foxy_timeout"]

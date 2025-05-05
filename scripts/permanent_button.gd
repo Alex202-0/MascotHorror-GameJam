@@ -25,9 +25,9 @@ func _ready():
 	pressed.connect(_on_button_down)
 
 func _on_button_down() -> void:
-	var token_game = get_tree().get_root().get_node("TokenGame")
+	var token_game : TokenGame = get_tree().get_root().get_node("TokenGame")
 
-	if token_game.tokens >= cost:
+	if token_game.tokens >= cost && token_game.upgradesEnabled:
 		token_game.tokens -= cost
 		token_game.emit_signal("tokens_changed", token_game.tokens)
 		
