@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dvi7q0rasu8s7"]
+[gd_scene load_steps=25 format=3 uid="uid://dvi7q0rasu8s7"]
 
 [ext_resource type="Script" uid="uid://ollcg4mqpo7d" path="res://scripts/camera_system.gd" id="1_gxu2p"]
 [ext_resource type="Texture2D" uid="uid://0h6j5fp0l0u2" path="res://assets/Camera Backgrounds/sans.jpg" id="2_rb1pm"]
@@ -13,32 +13,35 @@
 [ext_resource type="Texture2D" uid="uid://byguux5u0u2sm" path="res://assets/Camera Backgrounds/pokemon.jpg" id="9_u1g1r"]
 [ext_resource type="Texture2D" uid="uid://cgth1be5rbrry" path="res://assets/Camera Backgrounds/2-arcade-machine-screen-allan-swart.jpg" id="10_p4fxp"]
 [ext_resource type="Texture2D" uid="uid://coagj7hapu1s3" path="res://assets/flash.png" id="11_yhwok"]
+[ext_resource type="PackedScene" uid="uid://6omlbt71s5d7" path="res://scenes/CameraMinigames/springTrap.tscn" id="12_u1g1r"]
 [ext_resource type="PackedScene" uid="uid://dymrop508ml83" path="res://scenes/flashlight.tscn" id="12_usyeu"]
 [ext_resource type="FontFile" uid="uid://ct2bf8irj7o1w" path="res://assets/Fonts/vcr_osd_mono/VCR_OSD_MONO_1.001.ttf" id="13_3t73v"]
 [ext_resource type="PackedScene" uid="uid://d1w6xdl5sdk4p" path="res://scenes/AudioManager.tscn" id="14_yhwok"]
 
-[sub_resource type="Animation" id="Animation_usyeu"]
-resource_name = "blink"
-loop_mode = 2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TextureRect:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.433333, 0.833333),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 0, 0, 0.72549), Color(1, 0, 0, 0.372549), Color(1, 0, 0, 0.372549)]
-}
+[sub_resource type="GDScript" id="GDScript_u1g1r"]
+resource_name = "arcade_machine.gd"
+script/source = "extends TextureRect
+
+@export var currentMinigame : Node2D 
+var active : bool = false
+
+# Called when the node enters the scene tree for the first time.
+func _process(delta: float) -> void:
+	if active && visible:
+		currentMinigame.process(delta)
+
+func _on_button_pressed() -> void:
+	active = !active
+	$SubViewportContainer.visible = active
+	$cover.visible = !active
+"
 
 [sub_resource type="Animation" id="Animation_u1g1r"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/path = NodePath("joystick:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -46,6 +49,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 0, 0, 0.72549)]
+}
+
+[sub_resource type="Animation" id="Animation_usyeu"]
+resource_name = "blink"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("joystick:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.433333, 0.833333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 0.72549), Color(1, 0, 0, 0.372549), Color(1, 0, 0, 0.372549)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u4pc2"]
@@ -180,7 +199,7 @@ grow_vertical = 2
 texture = ExtResource("9_u1g1r")
 expand_mode = 2
 
-[node name="8" type="TextureRect" parent="Cameras"]
+[node name="8" type="TextureRect" parent="Cameras" node_paths=PackedStringArray("currentMinigame")]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -190,8 +209,27 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("10_p4fxp")
 expand_mode = 2
+script = SubResource("GDScript_u1g1r")
+currentMinigame = NodePath("SubViewportContainer/SubViewport/SpringTrap")
 
-[node name="TextureRect" type="TextureRect" parent="Cameras/8"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Cameras/8"]
+visible = false
+layout_mode = 0
+offset_left = 355.0
+offset_top = 54.0
+offset_right = 887.0
+offset_bottom = 401.0
+scale = Vector2(0.873283, 1.14964)
+
+[node name="SubViewport" type="SubViewport" parent="Cameras/8/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(512, 347)
+render_target_update_mode = 0
+
+[node name="SpringTrap" parent="Cameras/8/SubViewportContainer/SubViewport" instance=ExtResource("12_u1g1r")]
+position = Vector2(260, 116)
+
+[node name="joystick" type="TextureRect" parent="Cameras/8"]
 modulate = Color(1, 0, 0, 0.72549)
 layout_mode = 0
 offset_left = 254.0
@@ -202,11 +240,26 @@ scale = Vector2(0.175, 0.175)
 texture = ExtResource("11_yhwok")
 expand_mode = 1
 
-[node name="blink" type="AnimationPlayer" parent="Cameras/8"]
+[node name="blink" type="AnimationPlayer" parent="Cameras/8/joystick"]
+root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_u4pc2")
 }
 autoplay = "blink"
+
+[node name="Button" type="Button" parent="Cameras/8/joystick"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 263.0
+offset_bottom = 257.0
+
+[node name="cover" type="ColorRect" parent="Cameras/8"]
+layout_mode = 0
+offset_left = 347.0
+offset_top = 56.0
+offset_right = 804.0
+offset_bottom = 450.0
+color = Color(0.169245, 0.169245, 0.169245, 1)
 
 [node name="flashlight" parent="." instance=ExtResource("12_usyeu")]
 position = Vector2(564, 349)
@@ -394,4 +447,5 @@ text = "RETURN"
 [node name="AudioManager" parent="." instance=ExtResource("14_yhwok")]
 
 [connection signal="bonnieMinigameResult" from="." to="." method="_on_bonnie_minigame_result"]
+[connection signal="pressed" from="Cameras/8/joystick/Button" to="Cameras/8" method="_on_button_pressed"]
 [connection signal="pressed" from="CameraToggle/CameraButton" to="." method="_on_camera_button_pressed"]

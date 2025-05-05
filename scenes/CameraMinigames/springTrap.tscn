@@ -1,0 +1,211 @@
+[gd_scene load_steps=14 format=3 uid="uid://6omlbt71s5d7"]
+
+[ext_resource type="Script" uid="uid://ynakhdos8a7m" path="res://scenes/CameraMinigames/spring_trap.gd" id="1_xamee"]
+[ext_resource type="Texture2D" uid="uid://ba4fjga21yfo4" path="res://assets/animatronics.png" id="2_l8147"]
+[ext_resource type="FontFile" uid="uid://b8pgtq248qfvd" path="res://assets/Fonts/TeenyTinyPixls-o2zo.ttf" id="2_qhthh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hynhc"]
+size = Vector2(16, 404)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d1470"]
+size = Vector2(16, 430)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jnagb"]
+size = Vector2(16, 446)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mv1s7"]
+radius = 22.0227
+
+[sub_resource type="LabelSettings" id="LabelSettings_1g2m4"]
+font = ExtResource("2_qhthh")
+font_size = 5
+font_color = Color(1, 1, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_g06w6"]
+font = ExtResource("2_qhthh")
+font_size = 5
+font_color = Color(0.469911, 0.1832, 0.892497, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8c35f"]
+font = ExtResource("2_qhthh")
+font_size = 5
+font_color = Color(1, 0.423529, 0.054902, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hynhc"]
+font = ExtResource("2_qhthh")
+font_size = 5
+font_color = Color(0.596545, 0.205978, 9.62615e-08, 1)
+
+[sub_resource type="GDScript" id="GDScript_l8147"]
+script/source = "extends CharacterBody2D
+
+
+const SPEED = 100.0
+func physics_process(delta: float) -> void:
+	var direction := Input.get_axis(\"left\", \"right\")
+	if direction:
+		velocity.x = direction * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+	
+	move_and_slide()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g06w6"]
+size = Vector2(12, 20)
+
+[node name="SpringTrap" type="Node2D"]
+script = ExtResource("1_xamee")
+
+[node name="background" type="ColorRect" parent="."]
+offset_left = -256.0
+offset_top = -228.0
+offset_right = 253.0
+offset_bottom = 225.0
+color = Color(0.0527681, 0, 0.00890432, 1)
+
+[node name="walls" type="StaticBody2D" parent="."]
+
+[node name="left" type="CollisionShape2D" parent="walls"]
+position = Vector2(-218, 5)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_hynhc")
+
+[node name="right" type="CollisionShape2D" parent="walls"]
+position = Vector2(213, 5)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_hynhc")
+
+[node name="up" type="CollisionShape2D" parent="walls"]
+position = Vector2(5, -189)
+rotation = 1.5708
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_d1470")
+
+[node name="down" type="CollisionShape2D" parent="walls"]
+position = Vector2(-3, 199)
+rotation = 1.5708
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_jnagb")
+
+[node name="chica" type="Area2D" parent="."]
+position = Vector2(-182, 179)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="chica"]
+shape = SubResource("CircleShape2D_mv1s7")
+
+[node name="Label" type="Label" parent="chica"]
+visible = false
+offset_left = -28.0
+offset_top = -37.0
+offset_right = 32.0
+offset_bottom = -13.0
+text = "the first"
+label_settings = SubResource("LabelSettings_1g2m4")
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="chica"]
+position = Vector2(1, -4)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_l8147")
+region_enabled = true
+region_rect = Rect2(299.273, 4.54549, 70.078, 104.458)
+
+[node name="bonnie" type="Area2D" parent="."]
+position = Vector2(-118, 177)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bonnie"]
+shape = SubResource("CircleShape2D_mv1s7")
+
+[node name="Label" type="Label" parent="bonnie"]
+visible = false
+offset_left = -14.0
+offset_top = -34.0
+offset_right = 26.0
+offset_bottom = -11.0
+text = "why us?"
+label_settings = SubResource("LabelSettings_g06w6")
+
+[node name="Sprite2D" type="Sprite2D" parent="bonnie"]
+scale = Vector2(0.285, 0.285)
+texture = ExtResource("2_l8147")
+region_enabled = true
+region_rect = Rect2(224.221, 0.246387, 68.2624, 111.237)
+
+[node name="foxy" type="Area2D" parent="."]
+position = Vector2(79, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="foxy"]
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_mv1s7")
+
+[node name="Sprite2D" type="Sprite2D" parent="foxy"]
+position = Vector2(0, -5)
+scale = Vector2(0.319607, 0.328767)
+texture = ExtResource("2_l8147")
+region_enabled = true
+region_rect = Rect2(371.725, 8.29582, 66.1158, 101.428)
+
+[node name="Label" type="Label" parent="foxy"]
+visible = false
+offset_left = -20.0
+offset_top = -42.0
+offset_right = 20.0
+offset_bottom = -19.0
+text = "was it me?"
+label_settings = SubResource("LabelSettings_8c35f")
+horizontal_alignment = 1
+
+[node name="freddy" type="Area2D" parent="."]
+position = Vector2(179, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="freddy"]
+position = Vector2(0, -6)
+shape = SubResource("CircleShape2D_mv1s7")
+
+[node name="Sprite2D" type="Sprite2D" parent="freddy"]
+position = Vector2(0, -7)
+scale = Vector2(0.377273, 0.370908)
+texture = ExtResource("2_l8147")
+region_enabled = true
+region_rect = Rect2(153.036, 0.828199, 70.2535, 113.992)
+
+[node name="Label" type="Label" parent="freddy"]
+visible = false
+offset_left = -18.0
+offset_top = -41.0
+offset_right = 22.0
+offset_bottom = -18.0
+text = "monster"
+label_settings = SubResource("LabelSettings_hynhc")
+horizontal_alignment = 1
+
+[node name="afton" type="CharacterBody2D" parent="."]
+position = Vector2(-2, 180)
+script = SubResource("GDScript_l8147")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="afton"]
+shape = SubResource("RectangleShape2D_g06w6")
+
+[node name="sprite" type="Sprite2D" parent="afton"]
+scale = Vector2(0.259883, 0.251633)
+texture = ExtResource("2_l8147")
+region_enabled = true
+region_rect = Rect2(593.63, 459.264, 60.2294, 98.7266)
+
+[node name="Camera2D" type="Camera2D" parent="afton"]
+position = Vector2(0, -16)
+zoom = Vector2(7.83, 5.525)
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="body_entered" from="chica" to="." method="_on_chica_body_entered"]
+[connection signal="body_exited" from="chica" to="." method="_on_chica_body_exited"]
+[connection signal="body_entered" from="bonnie" to="." method="_on_bonnie_body_entered"]
+[connection signal="body_exited" from="bonnie" to="." method="_on_bonnie_body_exited"]
+[connection signal="body_entered" from="foxy" to="." method="_on_foxy_body_entered"]
+[connection signal="body_exited" from="foxy" to="." method="_on_foxy_body_exited"]
+[connection signal="body_entered" from="freddy" to="." method="_on_freddy_body_entered"]
+[connection signal="body_exited" from="freddy" to="." method="_on_freddy_body_exited"]
